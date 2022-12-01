@@ -8,9 +8,6 @@ main();
 
 function main()
 {
-    // var highestCalorieCount = 0;
-    // var highestCalorieElf = 0;
-
     var top3CalorieElves = [0,0,0];
 
     var totalCaloriesForCurrentElf = 0;
@@ -59,7 +56,7 @@ function main()
         previousChar = char;
     }
 
-    console.log("Higest Calorie Counts = "+top3CalorieElves);
+    console.log("Highest Calorie Counts = "+top3CalorieElves);
 
     var summation = 0;
     for (let i = 0; i < top3CalorieElves.length; i++)

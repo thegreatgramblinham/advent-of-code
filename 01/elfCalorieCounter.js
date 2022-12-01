@@ -22,6 +22,7 @@ function main()
 
         if (char == '\n' && previousChar == '\n')
         {
+            // see if it's the most caloric elf
             if (totalCaloriesForCurrentElf > highestCalorieCount)
             {
                 highestCalorieCount = totalCaloriesForCurrentElf;
@@ -46,8 +47,8 @@ function main()
         currentElfIndex++;
     }
 
-    console.log("Higest Calorie Count = "+highestCalorieCount);
-    console.log("Higest Calorie Elf = "+highestCalorieElf);
+    console.log("Highest Calorie Count = "+highestCalorieCount);
+    console.log("Highest Calorie Elf = "+highestCalorieElf);
     console.log("Total Elves = "+currentElfIndex+1);
 }
 
