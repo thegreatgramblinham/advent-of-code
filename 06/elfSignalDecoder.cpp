@@ -27,24 +27,24 @@ int main()
         linesRead++;
     }
 
-    cout << "Lines Read:" << linesRead;
+    cout << "Lines Read: " << linesRead;
     cout << "\n";
 
     const int UNIQUE_CHAR_COUNT = 14;//4; //Part 1
 
-    list<char> lastfourcharslist;
+    list<char> lastncharacterslist;
     size_t messagestartposition;
     for (size_t i = 0; i < signalstring.length(); i++)
     {
         char currentchar = signalstring[i];
-        lastfourcharslist.push_back(currentchar);
+        lastncharacterslist.push_back(currentchar);
 
-        if (lastfourcharslist.size() == UNIQUE_CHAR_COUNT+1)
+        if (lastncharacterslist.size() == UNIQUE_CHAR_COUNT+1)
         {
-            lastfourcharslist.pop_front();
+            lastncharacterslist.pop_front();
             set<char> currcharset;
 
-            for(const auto& prevChar : lastfourcharslist)
+            for(const auto& prevChar : lastncharacterslist)
             {
                 currcharset.insert(prevChar);
             }
