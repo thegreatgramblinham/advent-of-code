@@ -27,6 +27,8 @@ int main()
         linesRead++;
     }
 
+    signalfilestream.close();
+
     cout << "Lines Read: " << linesRead;
     cout << "\n";
 
