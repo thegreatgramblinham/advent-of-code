@@ -185,14 +185,10 @@ class FileStructureBuilder
         }
 };
 
-// Puzzle solution number 1
-class ThresholdDirectorySumCalculator
+class DirectoryHelper
 {
-    private:
-        int _threshold;
-        size_t _thresholdsummation;
-
-        size_t calc_total_dir_size(DirectoryNode* dir)
+    public:
+        static size_t calc_total_dir_size(DirectoryNode* dir)
         {
             DirectoryNode& currentdir = *dir;
 
@@ -214,6 +210,14 @@ class ThresholdDirectorySumCalculator
             return subdirstotal + filetotal;
             //return filetotal;
         }
+};
+
+// Puzzle 1 Solution
+class ThresholdDirectorySumCalculator
+{
+    private:
+        int _threshold;
+        size_t _thresholdsummation;
 
         // Sum all directory values that are less than or equal to a given threshold.
         void directory_size_threshold_summation(DirectoryNode* dir, int threshold)
@@ -243,7 +247,7 @@ class ThresholdDirectorySumCalculator
             size_t totaldirsummation = 0;
             for (DirectoryNode& subdir : currentdir.subdirectories)
             {
-                size_t dirsum = calc_total_dir_size(&subdir);
+                size_t dirsum = DirectoryHelper::calc_total_dir_size(&subdir);
                 totaldirsummation += dirsum;
                 subdirtotal++;
             }
@@ -270,8 +274,56 @@ class ThresholdDirectorySumCalculator
             directory_size_threshold_summation(root, _threshold);
             return _thresholdsummation;
         }
+
+
 };
 
+// Puzzle 2 Solution
+class SmallestFileToDeleteCalculator
+{
+    private:
+        size_t _freespace = 0;
+        size_t _filesystemsize = 0;
+        size_t _currsmallestdir = 0;
+
+        void find_smallest_directory_to_delete(DirectoryNode* dir, size_t freespacereq)
+        {
+            DirectoryNode& currentdir = *dir;
+
+            for (DirectoryNode& subdir : currentdir.subdirectories)
+            {
+                // Depth first
+                find_smallest_directory_to_delete(&subdir, freespacereq);
+            }
+
+            size_t currdirsize = DirectoryHelper::calc_total_dir_size(dir);
+
+            size_t potentialfreespace = _freespace + currdirsize;
+            if ((potentialfreespace >= freespacereq) && (currdirsize < _currsmallestdir))
+            {
+                cout << ">Found a smaller size. Replacing \'"+to_string(_currsmallestdir)+"\' with \'"
+                    +to_string(currdirsize)+"\'\n";
+                _currsmallestdir = currdirsize;
+            }
+        }
+
+    public:
+        SmallestFileToDeleteCalculator(size_t filesystemsize)
+        {
+            _filesystemsize = filesystemsize;
+        }
+
+        size_t run(DirectoryNode* dir, size_t freespacereq)
+        {
+            size_t rootsize = DirectoryHelper::calc_total_dir_size(dir);
+            _currsmallestdir = rootsize;
+            _freespace = _filesystemsize - rootsize;
+            cout << ">Free space available: \'"+to_string(_freespace)+" units\'\n";
+            cout << ">Need to free up \'"+to_string(freespacereq-_freespace)+" units\'\n";
+            find_smallest_directory_to_delete(dir, freespacereq);
+            return _currsmallestdir;
+        }
+};
 
 int main()
 {
@@ -284,6 +336,16 @@ int main()
     ThresholdDirectorySumCalculator dirsum(NODE_THRESHOLD);
 
     size_t total = dirsum.run(&rootdir);
-    cout << "Total summation under \'"+to_string(NODE_THRESHOLD)+"\': "+to_string(total);
+    cout << ">>Total summation under \'"+to_string(NODE_THRESHOLD)+"\': "+to_string(total)+"\n";
+    cout << "================\n";
+
+    const int FILE_SYSTEM_SIZE = 70000000;
+    SmallestFileToDeleteCalculator rmcalc(FILE_SYSTEM_SIZE);
+
+    const int FREE_SPACE_REQ = 30000000;
+    size_t rmdirsize = rmcalc.run(&rootdir, FREE_SPACE_REQ);
+
+    cout << ">>Smallest directory to remove for \'"+to_string(FREE_SPACE_REQ)+" units\': "
+        +to_string(rmdirsize)+"\n";
 }
 
