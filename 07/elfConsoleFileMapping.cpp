@@ -184,6 +184,95 @@ class FileStructureBuilder
         }
 };
 
+
+
+
+
+class ThresholdDirectorySumCalculator
+{
+    private:
+        int _threshold;
+        size_t _thresholdsummation;
+
+        size_t calc_total_dir_size(DirectoryNode* dir)
+        {
+            DirectoryNode& currentdir = *dir;
+
+            //Get the total for all sub dirs
+            size_t subdirstotal = 0;
+            for (DirectoryNode& subdir : currentdir.subdirectories)
+            {
+                size_t size = calc_total_dir_size(&subdir);
+                subdirstotal += size;
+            }
+
+            size_t filetotal;
+            //Get the total file size of the current dir.
+            for (FileNode& file : currentdir.files)
+            {
+                filetotal += file.filesize;
+            }
+
+            return subdirstotal + filetotal;
+            //return filetotal;
+        }
+
+        // Puzzle solution number 1
+        // Sum all directory values that are less than or equal to a given threshold.
+        void directory_size_threshold_summation(DirectoryNode* dir, int threshold)
+        {
+            DirectoryNode& currentdir = *dir;
+
+            for (DirectoryNode& subdir : currentdir.subdirectories)
+            {
+                // Depth first
+                directory_size_threshold_summation(&subdir, threshold);
+            }
+
+            cout << ">Visiting dir \""+currentdir.name+"\"\n";
+            size_t totalSummation;
+
+            // Sum the files.
+            size_t filesummationtotal;
+            for (FileNode& file : currentdir.files)
+            {
+                filesummationtotal += file.filesize;
+            }
+            cout << ">["+currentdir.name+"] has total file size:"+to_string(filesummationtotal)+"\n";
+            totalSummation += filesummationtotal;
+
+            // Sum the sub directories, discarding any above the threshold.
+            size_t totaldirsummation;
+            for (DirectoryNode& subdir : currentdir.subdirectories)
+            {
+                //todo there's bug here with this calculation
+                // size_t dirsum = calc_total_dir_size(&subdir);
+                // totaldirsummation += dirsum;
+            }
+            totalSummation += totaldirsummation;
+            cout << ">["+currentdir.name+"] has total subdir size:"+to_string(totaldirsummation)+"\n";
+
+            // If our total for this node is within the threshold, count it.
+            if (totalSummation <= _threshold)
+            {
+                _thresholdsummation += totalSummation;
+            }
+        }
+
+    public:
+        ThresholdDirectorySumCalculator(int threshold)
+        {
+            _threshold = threshold;
+        }
+
+        size_t run(DirectoryNode* root)
+        {
+            _thresholdsummation = 0;
+            directory_size_threshold_summation(root, _threshold);
+            return _thresholdsummation;
+        }
+};
+
 int main()
 {
     const string CONSOLE_FILE = "directory_console_logs.txt";
@@ -191,5 +280,10 @@ int main()
     FileStructureBuilder fsbuilder(CONSOLE_FILE);
     DirectoryNode rootdir = fsbuilder.buildfilesystem();
 
-    
+    const int NODE_THRESHOLD = 100000;
+    ThresholdDirectorySumCalculator dirsum(NODE_THRESHOLD);
+
+    size_t total = dirsum.run(&rootdir);
+    cout << "Total summation under \'"+to_string(NODE_THRESHOLD)+"\': "+to_string(total);
 }
+
