@@ -178,6 +178,7 @@ class FileStructureBuilder
                 inputlinesread++;
             }
 
+            consolefilestream.close();
             cout << ">> Lines read: "+ to_string(inputlinesread)+"\n";
             cout << ">> Directories created: "+ to_string(dircnt)+"\n";
             cout << ">> Files created: "+ to_string(filecnt)+"\n";
