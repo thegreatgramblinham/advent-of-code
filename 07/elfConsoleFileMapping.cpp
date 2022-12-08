@@ -83,7 +83,8 @@ class FileStructureBuilder
                         currentparsingstr += currentchar;
 
                         // Look for a "cd" command.
-                        if (!foundcd && currentparsingstr.substr(0, CHANGE_DIR_PREFIX.length()) == CHANGE_DIR_PREFIX)
+                        if (!foundcd && currentparsingstr.substr(
+                                0, CHANGE_DIR_PREFIX.length()) == CHANGE_DIR_PREFIX)
                         {
                             foundcd = true;
                             currentparsingstr = "";
@@ -116,7 +117,6 @@ class FileStructureBuilder
                             cout << ">Moving dir from \""+curr.name+"\""+" to \""+currentparsingstr+"\"\n";
                             for (DirectoryNode& searchnode : curr.subdirectories)
                             {
-                                //DirectoryNode searchnode = *nodeptr;
                                 namesfound += searchnode.name+";";
                                 if (currentparsingstr == searchnode.name)
                                 {
@@ -128,7 +128,8 @@ class FileStructureBuilder
 
                             if (!locationupdated)
                             {
-                                throw std::range_error("No subdirectory exists for \""+currentparsingstr+"\" out of : "+namesfound);
+                                throw std::range_error("No subdirectory exists for \""+currentparsingstr
+                                    +"\" out of : "+namesfound);
                             }
                         }
                         cds++;
@@ -252,7 +253,8 @@ class ThresholdDirectorySumCalculator
                 subdirtotal++;
             }
             totalSummation += totaldirsummation;
-            cout << ">["+currentdir.name+"] has "+to_string(subdirtotal)+" subdir(s) of total size:"+to_string(totaldirsummation)+"\n";
+            cout << ">["+currentdir.name+"] has "+to_string(subdirtotal)+" subdir(s) of total size:"
+                +to_string(totaldirsummation)+"\n";
             cout << ">["+currentdir.name+"] has total size: "+to_string(totalSummation)+"\n";
 
             // If our total for this node is within the threshold, count it.
