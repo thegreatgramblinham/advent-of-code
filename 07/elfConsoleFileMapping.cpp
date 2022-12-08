@@ -210,7 +210,6 @@ class DirectoryHelper
             }
 
             return subdirstotal + filetotal;
-            //return filetotal;
         }
 };
 
@@ -244,7 +243,7 @@ class ThresholdDirectorySumCalculator
             cout << ">["+currentdir.name+"] has total file size:"+to_string(filesummationtotal)+"\n";
             totalSummation += filesummationtotal;
 
-            // Sum the sub directories, discarding any above the threshold.
+            // Sum the sub directories.
             int subdirtotal = 0;
             size_t totaldirsummation = 0;
             for (DirectoryNode& subdir : currentdir.subdirectories)
@@ -277,8 +276,6 @@ class ThresholdDirectorySumCalculator
             directory_size_threshold_summation(root, _threshold);
             return _thresholdsummation;
         }
-
-
 };
 
 // Puzzle 2 Solution
