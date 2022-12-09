@@ -26,7 +26,7 @@ class TailLocationCalculator
 
             }
 
-            cout << ">Processed \'"+to_string(linecount)+"\' input lines."
+            cout << ">Processed \'"+to_string(linecount)+"\' input lines.";
             headmoveinstructions.close();
         }
 };
