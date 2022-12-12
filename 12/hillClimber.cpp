@@ -146,48 +146,170 @@ class TopoMapPathfinder
 
         bool canmoveup(int currrow, int currcol)
         {
+            cout<<" -->Checking can move down from ["+to_string(currrow)+", "+to_string(currcol)
+                    +"] to ["+to_string(currrow+1)+", "+to_string(currcol)+"]"<<endl;
             if (currrow+1 >= _inputmap->getrowcnt())
+            {
+                cout<<" -->[FAILED] Move is out of bounds."<<endl;
                 return false;
+            }
+
             size_t currweight = _inputmap->getlocweight(currrow, currcol);
             size_t upweight = _inputmap->getlocweight(currrow+1, currcol);
-            // cout<<to_string(getnode(currrow+1, currcol)->shortestpath)<<endl;
-            // cout<<to_string(getnode(currrow, currcol)->shortestpath)<<endl;
-            return upweight <= currweight+1
-                //&& !(getnode(currrow+1, currcol)->pathfound)
-                && (getnode(currrow+1, currcol)->shortestpath) > (getnode(currrow, currcol)->shortestpath);
+            if (upweight > currweight+1)
+            {
+                cout<<" -->[FAILED] Unable to move from weight["+to_string(currweight)
+                    +"] to ["+to_string(upweight)+"]"<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow+1, currcol)->pathfound))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow+1)+", "
+                    +to_string(currcol)+"] has shortest path found."<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow+1, currcol)->shortestpath) <= (getnode(currrow, currcol)->shortestpath+1))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow+1)+", "
+                    +to_string(currcol)+"] with shortest path \'"
+                    +to_string(getnode(currrow+1, currcol)->shortestpath)+"\' is less than or equal to possible assign."<<endl;
+                return false;
+            }
+
+            cout<<" -->[SUCCESS] Move is allowed."<<endl;
+            return true;
+
+            // return upweight <= currweight+1
+            //     && !(getnode(currrow+1, currcol)->pathfound)
+            //     && (getnode(currrow+1, currcol)->shortestpath) > (getnode(currrow, currcol)->shortestpath+1);
         }
 
         bool canmovedown(int currrow, int currcol)
         {
+            cout<<" -->Checking can move up from ["+to_string(currrow)+", "+to_string(currcol)
+                +"] to ["+to_string(currrow-1)+", "+to_string(currcol)+"]"<<endl;
             if (currrow-1 < 0)
+            {
+                cout<<" -->[FAILED] Move is out of bounds."<<endl;
                 return false;
+            }
+
             size_t currweight = _inputmap->getlocweight(currrow, currcol);
             size_t downweight = _inputmap->getlocweight(currrow-1, currcol);
-            return downweight <= currweight+1
-                //&& !(getnode(currrow-1, currcol)->pathfound)
-                && (getnode(currrow-1, currcol)->shortestpath) > (getnode(currrow, currcol)->shortestpath);
+            if (downweight > currweight+1)
+            {
+                cout<<" -->[FAILED] Unable to move from weight["+to_string(currweight)
+                    +"] to ["+to_string(downweight)+"]"<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow-1, currcol)->pathfound))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow-1)+", "
+                    +to_string(currcol)+"] has shortest path found."<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow-1, currcol)->shortestpath) <= (getnode(currrow, currcol)->shortestpath+1))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow-1)+", "
+                    +to_string(currcol)+"] with shortest path \'"
+                    +to_string(getnode(currrow-1, currcol)->shortestpath)+"\' is less than or equal to possible assign."<<endl;
+                return false;
+            }
+
+            cout<<" -->[SUCCESS] Move is allowed."<<endl;
+            return true;
+
+            // return downweight <= currweight+1
+            //     && !(getnode(currrow-1, currcol)->pathfound)
+            //     && (getnode(currrow-1, currcol)->shortestpath) > (getnode(currrow, currcol)->shortestpath+1);
         }
 
         bool canmoveleft(int currrow, int currcol)
         {
+            cout<<" -->Checking can move left from ["+to_string(currrow)+", "+to_string(currcol)
+                +"] to ["+to_string(currrow)+", "+to_string(currcol-1)+"]"<<endl;
             if (currcol-1 < 0)
+            {
+                cout<<" -->[FAILED] Move is out of bounds."<<endl;
                 return false;
+            }
+
             size_t currweight = _inputmap->getlocweight(currrow, currcol);
             size_t leftweight = _inputmap->getlocweight(currrow, currcol-1);
-            return leftweight <= currweight+1
-                //&& !(getnode(currrow, currcol-1)->pathfound)
-                && (getnode(currrow, currcol-1)->shortestpath) > (getnode(currrow, currcol)->shortestpath);
+            if (leftweight > currweight+1)
+            {
+                cout<<" -->[FAILED] Unable to move from weight["+to_string(currweight)
+                    +"] to ["+to_string(leftweight)+"]"<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow, currcol-1)->pathfound))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow)+", "
+                    +to_string(currcol-1)+"] has shortest path found."<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow, currcol-1)->shortestpath) <= (getnode(currrow, currcol)->shortestpath+1))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow)+", "
+                    +to_string(currcol-1)+"] with shortest path \'"
+                    +to_string(getnode(currrow, currcol-1)->shortestpath)+"\' is less than or equal to possible assign."<<endl;
+                return false;
+            }
+
+            cout<<" -->[SUCCESS] Move is allowed."<<endl;
+            return true;
+
+            // return leftweight <= currweight+1
+            //     && !(getnode(currrow, currcol-1)->pathfound)
+            //     && (getnode(currrow, currcol-1)->shortestpath) > (getnode(currrow, currcol)->shortestpath+1);
         }
 
         bool canmoveright(int currrow, int currcol)
         {
+            cout<<" -->Checking can move right from ["+to_string(currrow)+", "+to_string(currcol)
+                +"] to ["+to_string(currrow)+", "+to_string(currcol+1)+"]"<<endl;
             if (currcol+1 >= _inputmap->getcolcnt())
+            {
+                cout<<" -->[FAILED] Move is out of bounds."<<endl;
                 return false;
+            }
+
             size_t currweight = _inputmap->getlocweight(currrow, currcol);
             size_t rightweight = _inputmap->getlocweight(currrow, currcol+1);
-            return rightweight <= currweight+1
-                //&& !(getnode(currrow, currcol+1)->pathfound)
-                && (getnode(currrow, currcol+1)->shortestpath) > (getnode(currrow, currcol)->shortestpath);
+            if (rightweight > currweight+1)
+            {
+                cout<<" -->[FAILED] Unable to move from weight["+to_string(currweight)
+                    +"] to ["+to_string(rightweight)+"]"<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow, currcol+1)->pathfound))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow)+", "
+                    +to_string(currcol+1)+"] has shortest path found."<<endl;
+                return false;
+            }
+
+            if ((getnode(currrow, currcol+1)->shortestpath) <= (getnode(currrow, currcol)->shortestpath+1))
+            {
+                cout<<" -->[FAILED] Node at ["+to_string(currrow)+", "
+                    +to_string(currcol+1)+"] with shortest path \'"
+                    +to_string(getnode(currrow, currcol+1)->shortestpath)+"\' is less than or equal to possible assign."<<endl;
+                return false;
+            }
+
+            cout<<" -->[SUCCESS] Move is allowed."<<endl;
+            return true;
+
+            // return rightweight <= currweight+1
+            //     && !(getnode(currrow, currcol+1)->pathfound)
+            //     && (getnode(currrow, currcol+1)->shortestpath) > (getnode(currrow, currcol)->shortestpath+1);
         }
 
         PathfinderNode* getnode(int row, int col)
