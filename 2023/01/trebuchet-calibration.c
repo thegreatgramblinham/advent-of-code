@@ -153,6 +153,7 @@ int main(void)
 #endif
     }
 
+    fclose(input_file_ptr);
     calibration_total += combine_digit_chars(digit_chars, CHAR_DIGIT_ARR_SIZE);
     printf("Calibration total is: %lu", calibration_total);
 

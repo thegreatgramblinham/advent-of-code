@@ -162,6 +162,7 @@ int main(void)
         game_buffer_index = 0;
     }
 
+    fclose(input_file_ptr);
     printf("Total games: %d, Valid game number summation: %lu\n", game_number-1, possible_game_number_summation);
     printf("Total game power: %lu", game_power_summation);
     return 0;
