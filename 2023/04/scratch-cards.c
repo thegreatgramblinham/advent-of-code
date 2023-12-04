@@ -37,7 +37,6 @@ struct scratch_card_content_s
 static uint16_t _iterator_set_array_index = 0;
 static uint16_t _iterator_list_index = 0;
 static uint32_t _current_card_number = 1;
-static uint32_t _processed_card_quant = 0;
 
 ///Static Functions
 static uint32_t int_item_get_hash(uint16_t item)
@@ -238,6 +237,7 @@ int main(void)
     }
 
     uint64_t card_value_summation = 0;
+    uint32_t processed_card_quant = 0;
 
     uint64_t card_repeats[MAX_CARD_QUANT];
     for (int i = 0; i < MAX_CARD_QUANT; i++)
@@ -253,6 +253,12 @@ int main(void)
             exit(1);
         }
 
+        if (_current_card_number >= MAX_CARD_QUANT)
+        {
+            perror("Max card quantity reached.");
+            exit(1);
+        }
+
         struct scratch_card_content_s card_content = get_card_content(line_start_ptr);
         uint64_t card_value = get_card_value(card_content);
         card_value_summation += card_value;
@@ -262,7 +268,7 @@ int main(void)
         {
             for (int j = 1; j <= extra_card_quant; j++)
                 card_repeats[_current_card_number+j]++;
-            _processed_card_quant++;
+            processed_card_quant++;
         }
 
         int_hash_set_destroy(card_content.winning_number_set);
@@ -271,7 +277,7 @@ int main(void)
     }
 
     printf("Total card value: %lu\n", card_value_summation);
-    printf("Total cards processed: %u\n", _processed_card_quant);
+    printf("Total cards processed: %u\n", processed_card_quant);
     fclose(input_file_ptr);
     return 0;
 }
