@@ -16,7 +16,7 @@ struct int_list_item_s
 typedef struct int_list_item_s *int_item_ptr;
 
 // This could be size 100 (or an array), but I want to practice dealing with hash collisions.
-#define INT_HASH_SET_INTERNAL_SIZE 25
+#define INT_HASH_SET_INTERNAL_SIZE 5
 struct int_hash_set_s
 {
     uint32_t item_count;
