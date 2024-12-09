@@ -65,7 +65,7 @@ static uint64_t get_point_hash(struct grid_point_s point)
     return ((point.height_index)^391) * ((point.width_index)^391);
 }
 
-bool list_contains_point(struct grid_point_s point, point_item_ptr_t list_head_ptr)
+static bool list_contains_point(struct grid_point_s point, point_item_ptr_t list_head_ptr)
 {
     point_item_ptr_t curr_item_ptr = list_head_ptr;
     while (curr_item_ptr != NULL)
@@ -77,13 +77,13 @@ bool list_contains_point(struct grid_point_s point, point_item_ptr_t list_head_p
     return false;
 }
 
-bool hashset_contains_point(struct grid_point_s point, point_arr_ptr_t hashset_head_ptr_ref)
+static bool hashset_contains_point(struct grid_point_s point, point_arr_ptr_t hashset_head_ptr_ref)
 {
     uint64_t point_hash = get_point_hash(point);
     return list_contains_point(point, *(hashset_head_ptr_ref + (point_hash%POINT_SET_ARR_SIZE)));
 }
 
-void list_insert_point(struct grid_point_s point, point_arr_ptr_t list_head_ptr_ref)
+static void list_insert_point(struct grid_point_s point, point_arr_ptr_t list_head_ptr_ref)
 {
     if (list_contains_point(point, *list_head_ptr_ref))
         return;
@@ -101,7 +101,7 @@ void list_insert_point(struct grid_point_s point, point_arr_ptr_t list_head_ptr_
     }
 }
 
-void hashset_insert_point(struct grid_point_s point, point_arr_ptr_t hashset_head_ptr_ref)
+static void hashset_insert_point(struct grid_point_s point, point_arr_ptr_t hashset_head_ptr_ref)
 {
     if (hashset_contains_point(point, hashset_head_ptr_ref))
         return;

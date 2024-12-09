@@ -16,7 +16,7 @@ static int32_t _r_list[LIST_SIZE] = {0};
 static size_t _r_list_count = 0;
 
 ///Functions
-int comp_int(const void* x, const void* y)
+static int comp_int(const void* x, const void* y)
 {
     int64_t arg1 = *(const int64_t*)x;
     int64_t arg2 = *(const int64_t*)y;

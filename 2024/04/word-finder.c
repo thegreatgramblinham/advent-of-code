@@ -30,7 +30,7 @@ enum search_dir_e
 };
 
 ///Functions
-bool search_direction_for_targe(char* targe_char_ptr, enum search_dir_e search_dir,
+static bool search_direction_for_targe(char* targe_char_ptr, enum search_dir_e search_dir,
     uint32_t curr_height_pos, uint32_t curr_width_pos)
 {
     if (*targe_char_ptr == '\0')
@@ -70,7 +70,7 @@ bool search_direction_for_targe(char* targe_char_ptr, enum search_dir_e search_d
     }
 }
 
-uint16_t targe_word_search_count(char* targe_word_ptr, uint32_t curr_height_pos, uint32_t curr_width_pos)
+static uint16_t targe_word_search_count(char* targe_word_ptr, uint32_t curr_height_pos, uint32_t curr_width_pos)
 {
     uint64_t targe_count = 0;
     for (int i = NORTH; i <= SOUTH_EAST; i++)
@@ -80,7 +80,7 @@ uint16_t targe_word_search_count(char* targe_word_ptr, uint32_t curr_height_pos,
     return targe_count;
 }
 
-uint64_t find_word_target_count(char* targe_word)
+static uint64_t find_word_target_count(char* targe_word)
 {
     uint64_t targe_total = 0;
     for (int curr_height_pos = 0; curr_height_pos < GRID_HEIGHT; curr_height_pos++)
@@ -90,7 +90,7 @@ uint64_t find_word_target_count(char* targe_word)
     return targe_total;
 }
 
-bool test_for_mas_cross(uint32_t curr_height_pos, uint32_t curr_width_pos)
+static bool test_for_mas_cross(uint32_t curr_height_pos, uint32_t curr_width_pos)
 {
     char* m_char = "AM";
     char* s_char = "AS";
@@ -116,7 +116,7 @@ bool test_for_mas_cross(uint32_t curr_height_pos, uint32_t curr_width_pos)
     return diag1 && diag2;
 }
 
-uint64_t find_xmas_count(void)
+static uint64_t find_xmas_count(void)
 {
     uint64_t xmas_count = 0;
     for (int curr_height_pos = 0; curr_height_pos < GRID_HEIGHT; curr_height_pos++)

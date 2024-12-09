@@ -26,7 +26,7 @@ uint64_t _total_summation = 0;
 uint64_t _current_result_target = 0;
 
 ///Functions
-bool try_operator(uint64_t *operand_ptr, uint64_t curr_total, enum operator_e op_to_apply)
+static bool try_operator(uint64_t *operand_ptr, uint64_t curr_total, enum operator_e op_to_apply)
 {
     switch (op_to_apply)
     {

@@ -26,7 +26,7 @@ struct disk_block_s
 };
 
 ///Functions
-bool are_disk_block_eq(struct disk_block_s b1, struct disk_block_s b2)
+static bool are_disk_block_eq(struct disk_block_s b1, struct disk_block_s b2)
 {
     return b1.state == b2.state && b1.file_id == b2.file_id;
 }

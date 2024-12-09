@@ -17,7 +17,7 @@
 ///Global Variables
 
 ///Functions
-uint64_t process_mul_params(char *param_start_ptr)
+static uint64_t process_mul_params(char *param_start_ptr)
 {
     char *curr_char = param_start_ptr;
     uint32_t arg1 = 0;

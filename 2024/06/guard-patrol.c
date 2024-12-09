@@ -62,27 +62,22 @@ static list_point_item_ptr _curr_obstacle_path_lookup[POINT_SET_ARR_SIZE] = {0};
 static uint64_t _loop_count = 0;
 
 //Functions
-bool are_base_point_eq(struct grid_point_s x, struct grid_point_s y)
+static bool are_base_point_eq(struct grid_point_s x, struct grid_point_s y)
 {
     return x.height_index == y.height_index && x.width_index == y.width_index;
 }
 
-bool are_full_point_eq(struct grid_point_s x, struct grid_point_s y)
+static bool are_full_point_eq(struct grid_point_s x, struct grid_point_s y)
 {
     return are_base_point_eq(x,y) && x.faced_dir == y.faced_dir;
 }
 
-uint64_t get_base_point_hash(struct grid_point_s point)
+static uint64_t get_base_point_hash(struct grid_point_s point)
 {
     return ((point.height_index)^391) * ((point.width_index)^391);
 }
 
-uint64_t get_full_point_hash(struct grid_point_s point)
-{
-    return get_base_point_hash(point) * ((point.faced_dir)^391);
-}
-
-bool contains_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t lookup_arr,
+static bool contains_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t lookup_arr,
     point_equality_func_ptr_t equality_func_ptr)
 {
     uint64_t point_hash = get_base_point_hash(point);
@@ -97,7 +92,7 @@ bool contains_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t lo
     return false;
 }
 
-void insert_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t lookup_arr,
+static void insert_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t lookup_arr,
     point_equality_func_ptr_t equality_func_ptr)
 {
     if (contains_visited_point(point, lookup_arr, equality_func_ptr))
@@ -118,21 +113,21 @@ void insert_visited_point(struct grid_point_s point, point_lookup_arr_ptr_t look
     }
 }
 
-bool is_within_grid_bounds(struct grid_point_s point)
+static bool is_within_grid_bounds(struct grid_point_s point)
 {
     return (point.height_index >= 0 && point.height_index < GRID_HEIGHT
         && point.width_index >= 0 && point.width_index < GRID_WIDTH)
         && _main_grid[point.height_index][point.width_index] != 0;
 }
 
-bool is_obstacle(struct grid_point_s point)
+static bool is_obstacle(struct grid_point_s point)
 {
     if (!is_within_grid_bounds(point))
         return false;
     return _main_grid[point.height_index][point.width_index] == '#';
 }
 
-enum guard_advance_result_e try_advance_guard_position(enum walk_dir_e walk_dir)
+static enum guard_advance_result_e try_advance_guard_position(enum walk_dir_e walk_dir)
 {
     struct grid_point_s next_guard_loc = _curr_guard_position;
     switch (walk_dir)
@@ -164,7 +159,7 @@ enum guard_advance_result_e try_advance_guard_position(enum walk_dir_e walk_dir)
     return OK;
 }
 
-void dispose_lookup_item(list_point_item_ptr item_ptr)
+static void dispose_lookup_item(list_point_item_ptr item_ptr)
 {
     if (item_ptr == NULL)
         return;
@@ -173,7 +168,7 @@ void dispose_lookup_item(list_point_item_ptr item_ptr)
     free(item_ptr);
 }
 
-void dispose_lookup_arr(point_lookup_arr_ptr_t point_arr_ptr)
+static void dispose_lookup_arr(point_lookup_arr_ptr_t point_arr_ptr)
 {
     for (int i = 0; i < POINT_SET_ARR_SIZE; i++)
         dispose_lookup_item(*(point_arr_ptr+i));
@@ -181,7 +176,7 @@ void dispose_lookup_arr(point_lookup_arr_ptr_t point_arr_ptr)
     memset(point_arr_ptr, 0, sizeof(list_point_item_ptr)*POINT_SET_ARR_SIZE);
 }
 
-uint64_t plot_guard_path(point_lookup_arr_ptr_t lookup_arr, point_equality_func_ptr_t equality_func_ptr)
+static uint64_t plot_guard_path(point_lookup_arr_ptr_t lookup_arr, point_equality_func_ptr_t equality_func_ptr)
 {
     uint64_t total_steps = 0;
     uint32_t turn_count = 0;
@@ -210,7 +205,7 @@ uint64_t plot_guard_path(point_lookup_arr_ptr_t lookup_arr, point_equality_func_
     return total_steps;
 }
 
-void count_obstacle_loops(void)
+static void count_obstacle_loops(void)
 {
     for (int i = 0; i < POINT_SET_ARR_SIZE; i++)
     {
