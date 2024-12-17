@@ -127,7 +127,7 @@ static bool attempt_box_scoot(struct grid_point_s box_loc, enum dir_e move_dir)
     if (curr_loc_content != 'O')
         return false;
 
-    while (is_within_grid_bounds(curr_loc) 
+    while (is_within_grid_bounds(curr_loc)
             && curr_loc_content != '.'
             && curr_loc_content != '#')
     {
